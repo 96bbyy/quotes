@@ -3,8 +3,21 @@ const quoteText = document.getElementById('quote');
 const authorText = document.getElementById('author');
 const twitterBtn = document.getElementById('twitter');
 const newQuoteBtn = document.getElementById('new-quote');
+const loader = document.getElementById('loader')
 let apiQuotes = []
+// Show Loading
+function loading() {
+    loader.hidden=false;
+    quoteContainer.hidden=true;
+}
+// Hide Loading
+function complete(){
+    quoteContainer.hidden=false;
+    loader.hidden=true;
+    
+}
 function newQuote() {
+    loading();
     // pick a random quote from apiQuote array
     const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
     if (!quote.author) {
@@ -16,11 +29,14 @@ function newQuote() {
     else {quoteText.classList.remove('long-quote');}
     console.log(quote.text);
     console.log(quote.author);
+    // Set Quote, Hide Loader
+    complete();
     authorText.textContent = quote.author;
     quoteText.textContent = quote.text;
 }
 // Get Quotes From API
 async function getQuotes() {
+    loading();
     const apiUrl = 'https://jacintodesign.github.io/quotes-api/data/quotes.json';
     try {
         // using async function and the await keyword means
